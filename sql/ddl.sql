@@ -1,4 +1,4 @@
-create table course
+/* create table course
 (
     name        varchar(100) not null,
     id          int auto_increment
@@ -53,3 +53,85 @@ INSERT INTO lecturers.lecturer_course (id, lecturer_id, course_id) VALUES (6, 3,
 INSERT INTO lecturers.lecturer_course (id, lecturer_id, course_id) VALUES (7, 3, 5);
 INSERT INTO lecturers.lecturer_course (id, lecturer_id, course_id) VALUES (8, 3, 6);
 INSERT INTO lecturers.lecturer_course (id, lecturer_id, course_id) VALUES (9, 4, 2);
+ */
+
+
+ -- eigen queries
+
+create table user
+(
+    id          int auto_increment primary key,
+    name   varchar(100) not null,
+    status varchar(255) not null,
+    LoggedIn boolean    not null,
+    message_id int,
+    constraint user_id_uindex
+        unique (id),
+    constraint fk_message_id
+    foreign key (message_id) references message(id)
+);
+
+
+create table message
+(   
+    id      int auto_increment,
+    chat_id int not null,
+    text    varchar(1000) not null,
+    DateSent timestamp not null,
+    type    varchar(7) not null,
+
+    constraint message_id_uindex
+    unique (id),
+    constraint fk_author
+    foreign key (author) references user (id),
+    constraint fk_chat
+    foreign key (chat_id) references chat (id),
+    constraint type_enum CHECK (type = 'public' OR type = 'private'),
+);
+
+create table chat
+(
+    id  int auto_increment primary key,
+    message_id int,
+
+    constraint chat_id_uindex
+    unique (id),
+    constraint fk_message_id
+    foreign key (message_id) references message(id)
+);
+
+create table user_has_chat
+(
+    id  int auto_increment primary key,
+    chat_id int not null,
+    user_id   int not null,
+    message_id int not null,
+    constraint fk_chat_id
+        foreign key (chat_id) references chat (id),
+    constraint fk_user_id
+        foreign key (lecturer_id) references lecturer (id)
+);
+
+
+create table user_has_friend
+(
+    id      int auto_increment primary key,
+    user_id int not null,
+    friend_id int not null,
+
+    constraint fk_user_id
+        foreign key(user_id) references user(id),
+    constraint fk_friend_id
+        foreign key(friend_id) references user(id),
+)
+
+
+
+INSERT INTO studentbook.user (id, name, status, LoggedIn) VALUES (1, 'Siebe Cooreman', 'I am eating', True);
+INSERT INTO studentbook.user (id, name, status, LoggedIn) VALUES (2, 'Greg Francois Reynders', 'Offline', False);
+INSERT INTO studentbook.chat (id) VALUES (1);
+INSERT INTO studentbook.message (id, chat_id, text, DateSent, author, type) VALUES (1, 1, "Hallo Greg, hoe gaat het", '2017-05-05 18:05:23', 1, 'public');
+INSERT INTO studentbook.message (id, chat_id, text, DateSent, author, type) VALUES (1, 1, "Hallo Siebe, alles goed", '2017-05-05 19:05:23', 1, 'public');
+INSERT INTO studentbook.user_has_friend (id, user_id, friend_id) VALUES (1, 1, 2);
+INSERT INTO studentbook.user_has_chat(id, chat_id, user_id) VALUES (1, 1, 1)
+INSERT INTO studentbook.user_has_chat(id, chat_id, user_id) VALUES (2, 1, 2)
