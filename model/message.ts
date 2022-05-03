@@ -24,6 +24,25 @@ const getLatestFiveMessages = async (onResult: (error: Error, messages: Message[
     }
 };
 
+// const addMeal = async (title:string, userId: number, duration: string, numberOfPortions: string, price: string, picture:string, vegetarian:boolean=false) => {
+//     const meal = await prisma.meal.create({
+//         data: {
+//           title: title,
+//           duration: parseInt(duration),
+//           price: parseFloat(price),
+//           picture: picture,
+//           user: {
+//             connect: {
+//                 id: userId,
+//             },
+//           },
+//           vegetarian: vegetarian,
+//         },
+//         include: {
+//           user: true,
+//         },
+//       })
+
 const addMessage = async (userId: Number, messageText: String,
     onResult: (error: Error, message: String) => void
 ) => {
@@ -31,8 +50,10 @@ const addMessage = async (userId: Number, messageText: String,
     try {
         const addMessage = 
         await prisma.message.create({
-            where: {id: userId},
-            data: {text: {messageText}}
+            data: {
+                text: messageText,
+                author: {connect: {id: userId}}
+            }
         })
         onResult(null, addMessage);
     } catch (error) {
