@@ -49,7 +49,7 @@ const changeStatus = async (
 
 
 
-const addFriend = async (userId: Number, friendId,
+const addFriend = async (userId: Number, friendId: Number,
     onResult: (error: Error, addedFriendId: number) => void
 ) => {
 

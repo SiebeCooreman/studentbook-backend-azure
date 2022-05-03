@@ -24,5 +24,21 @@ const getLatestFiveMessages = async (onResult: (error: Error, messages: Message[
     }
 };
 
+const addMessage = async (userId: Number, messageText: String,
+    onResult: (error: Error, message: String) => void
+) => {
 
-export {getLatestFiveMessages};
+    try {
+        const addMessage = 
+        await prisma.message.create({
+            where: {id: userId},
+            data: {text: {messageText}}
+        })
+        onResult(null, addMessage);
+    } catch (error) {
+        onResult(error, null);
+    }
+};
+
+
+export {getLatestFiveMessages, addMessage};

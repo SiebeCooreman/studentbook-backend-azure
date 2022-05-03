@@ -69,6 +69,18 @@
      });
  });
  
+messageRouter.post('/add', (req: Request, res: Response) => {
+    const authorId = req.body['id']
+    const message = req.body['message']
+    messageModel.addMessage(authorId, message, (error: Error, message: String) => {
+        if (error) {
+            res.status(500).json({ status: 'error', errorMessage: error.message });
+        } else {
+            res.status(200).json({ status: 'success', message });
+        }
+    });
+});
+
  // /**
  //  * @swagger
  //  * /lecturers/{id}:
