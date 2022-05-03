@@ -19,7 +19,7 @@ model User {
   loggedin Boolean @default(false)
   following User[] @relation("friends", references: [id])
   followedBy User[] @relation("friends", references: [id])
-  chats Chat[]
+  // chats Chat[]
   messages Message[]
 }
 
@@ -30,16 +30,16 @@ model Message {
   DateSent DateTime @default(now())
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
-  chat      Chat? @relation(fields: [chatId], references: [id])
-  chatId    Int?
+  // chat      Chat? @relation(fields: [chatId], references: [id])
+  // chatId    Int?
   type    Type @default(Public)
 }
 
-model Chat {
-  id     Int     @id @default(autoincrement())
-  users    User[]
-  messages   Message[]
-}
+// model Chat {
+//   id     Int     @id @default(autoincrement())
+//   users    User[]
+//   messages   Message[]
+// }
 
 
 enum Type {
