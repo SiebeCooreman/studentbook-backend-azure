@@ -24,6 +24,26 @@ const getLatestFiveMessages = async (onResult: (error: Error, messages: Message[
     }
 };
 
+const getLatestFiveMessagesOfFriend = async (userId: Number, onResult: (error: Error, messages: Message[]) => void) => {
+    try {
+        const fiveMessages = await prisma.message.findMany({
+            where: {
+                type: Type.Public
+            },
+            orderBy: {
+                DateSent: 'desc'
+            },
+            take: 5,
+            include: {
+                author: true
+            }
+        })
+        onResult(null, fiveMessages);
+    } catch (error) {
+        onResult(error, null);
+    }
+};
+
 // const addMeal = async (title:string, userId: number, duration: string, numberOfPortions: string, price: string, picture:string, vegetarian:boolean=false) => {
 //     const meal = await prisma.meal.create({
 //         data: {
@@ -48,7 +68,7 @@ const addMessage = async (userId: Number, messageText: String,
 ) => {
 
     try {
-        const addMessage = 
+        const addMessage =
         await prisma.message.create({
             data: {
                 text: messageText,
@@ -62,4 +82,4 @@ const addMessage = async (userId: Number, messageText: String,
 };
 
 
-export {getLatestFiveMessages, addMessage};
+export {getLatestFiveMessages, getLatestFiveMessagesOfFriend, addMessage};

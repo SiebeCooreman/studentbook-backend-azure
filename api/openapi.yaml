@@ -1,0 +1,242 @@
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+          description: User's name.
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              name:
+                type: string
+                description: Course name
+              description:
+                type: string
+                description: Course description
+              phase:
+                type: number
+                description: The phase within the education path
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    Register:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+    StatusPost:
+      type: object
+      properties:
+        status:
+          type: string
+    FriendPost:
+      type: object
+      properties:
+        friendsemail:
+          type: string
+    MessagePost:
+      type: object
+      properties:
+        message:
+          type: string
+
+    Message:
+      type: object
+      properties:
+        text:
+          type: string
+        DateSent:
+          type: string
+        author:
+          type: string
+    Token:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+    Friend:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: boolean
+
+paths:
+  /users:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get a list of last 5 public users.
+      responses:
+        200:
+          description: A list of users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/login:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      summary: Get a token to authenticate yourself.
+      responses:
+        200:
+          description: Valid Credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        403:
+          description: Invalid Credentials
+  /users/Register:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+      summary: Register.
+      responses:
+        200:
+          description: Valid Credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        403:
+          description: Invalid Credentials
+  /users/status:
+
+    put:
+      security:
+        - bearerAuth: [ ]
+      summary: change the users status.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusPost'
+      responses:
+        200:
+          description: Valid Credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: User doesn’t exist
+
+  /friends/:
+    get:
+      security:
+        - bearerAuth: [ ]
+      summary: get a list of friends
+      responses:
+        200:
+          description: Valid Credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+  /friends:
+    post:
+      security:
+        - bearerAuth: [ ]
+      summary: add a friend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendPost'
+      responses:
+        200:
+          description: Valid Credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+  /users/profile:
+      get:
+        security:
+          - bearerAuth: [ ]
+        summary: see profile
+        responses:
+          200:
+            description: Valid Credentials
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          403:
+            description: InValid Credentials
+
+  /messages:
+      get:
+        security:
+          - bearerAuth: [ ]
+        summary: Get a list of last 5 public messages.
+        responses:
+          200:
+            description: A list of users.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Message'
+      post:
+        security:
+          - bearerAuth: [ ]
+        summary: post a messages.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessagePost'
+        responses:
+          200:
+            description: A list of users.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Message'

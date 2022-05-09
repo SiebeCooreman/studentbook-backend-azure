@@ -32,7 +32,7 @@ const changeStatus = async (
 ) => {
 
     try {
-        const updateStatusForUser = 
+        const updateStatusForUser =
         await prisma.user.update({
             where: {
                 id: userId,
@@ -49,16 +49,14 @@ const changeStatus = async (
 
 
 
-const addFriend = async (userId: Number, friendId: Number,
-    onResult: (error: Error, addedFriendId: number) => void
-) => {
+const addFriend = async (userId : Number, friendsemail: Number, onResult: (error: Error, addedFriendId: number) => void) => {
 
     try {
-        const addFriendToUser = 
+        const addFriendToUser =
         await prisma.user.update({
-            where: {id: userId},
+            where: {id:userId },
             data: {
-                following: {connect: {id: friendId}
+                following: {connect: {email: friendsemail}
             }
         }})
         onResult(null, addFriendToUser);
@@ -66,6 +64,39 @@ const addFriend = async (userId: Number, friendId: Number,
         onResult(error, null);
     }
 };
+
+
+// part of login system
+
+const bcrypt = require('bcrypt');
+const { db } = require('../Utils/db');
+
+async function findUserByEmail(email) {
+    return db.user.findUnique({
+        where: {
+            email,
+        },
+    });
+}
+
+
+
+async function createUserByEmailAndPassword(user) {
+    user.password = bcrypt.hashSync(user.password, 12);
+    return db.user.create({
+        data: user,
+    });
+
+}
+
+function findUserById(id) {
+    return db.user.findUnique({
+        where: {
+            id,
+        },
+    });
+}
+
 
 
 // const getLecturer = async (
@@ -141,4 +172,4 @@ const addFriend = async (userId: Number, friendId: Number,
 //     }
 // };
 
-export { getUsers, changeStatus, addFriend, getFriends };
+export { getUsers, changeStatus, addFriend, getFriends, findUserById, findUserByEmail, createUserByEmailAndPassword};

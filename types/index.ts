@@ -1,11 +1,4 @@
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-    friends: Array<User> | null;
-    messages: Array<Message>  | null;
-}
+import DateTimeFormat = Intl.DateTimeFormat;
 
 export interface Message {
     id: number;
@@ -22,6 +15,33 @@ export interface Chat {
     users: Array<User> | null;
     messages: Array<Message> | null;
 }
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    status: "online";
+    friends: Array<User> | null;
+    messages: Array<Message>  | null;
+    refreshTokens: Array<RefreshToken>;
+    createdAt: DateTimeFormat;
+    updatedAt: DateTimeFormat;
+
+}
+
+export interface RefreshToken {
+
+    id: number;
+    nahashedTokenme: string;
+    userId: string;
+    user: User;
+    revoked: Boolean;
+    createdAt: DateTimeFormat;
+    updatedAt: DateTimeFormat;
+
+}
+
 
 
 export enum Type {
