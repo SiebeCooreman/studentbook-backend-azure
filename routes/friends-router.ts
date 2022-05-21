@@ -7,7 +7,6 @@ const { isAuthenticated } = require('../middlewares');
 const friendsRouter = express.Router();
 
 friendsRouter.post('/', isAuthenticated, async (req, res, next) => {
-
     const {userId , friendsemail} = req.body;
     userModel.addFriend(userId, friendsemail, (error: Error, userId: number) => {
         if (error) {

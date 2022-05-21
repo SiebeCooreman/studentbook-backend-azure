@@ -8,6 +8,7 @@ import { userRouter } from './routes/user-router';
 import { messageRouter } from './routes/message-router';
 import authRouter from "./routes/auth-routes";
 import { friendsRouter } from "./routes/friends-router";
+import { chatRouter } from './routes/chat-router';
 
 const app = express();
 dotenv.config();
@@ -55,7 +56,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/users', userRouter, authRouter);
 app.use('/friends', friendsRouter);
-app.use("/messages", messageRouter)
+app.use("/messages", messageRouter);
+app.use("/chats", chatRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Backend is running...' });

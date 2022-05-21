@@ -56,9 +56,18 @@ const addFriend = async (userId : Number, friendsemail: Number, onResult: (error
         await prisma.user.update({
             where: {id:userId },
             data: {
-                following: {connect: {email: friendsemail}
-            }
+                following: {connect: {email: friendsemail}},
+                followedBy: {connect: {email: friendsemail}}
+
         }})
+
+        await prisma.chat.create({
+            data: {
+                users: { connect: [{ id: userId }, { email: friendsemail }] },
+            },
+        });
+
+
         onResult(null, addFriendToUser);
     } catch (error) {
         onResult(error, null);
@@ -79,8 +88,6 @@ async function findUserByEmail(email) {
     });
 }
 
-
-
 async function createUserByEmailAndPassword(user) {
     user.password = bcrypt.hashSync(user.password, 12);
     return db.user.create({
@@ -96,58 +103,5 @@ function findUserById(id) {
         },
     });
 }
-
-
-
-// const getLecturer = async (
-//     lecturerId: number,
-//     onResult: (error: Error, lecturer: Lecturer) => void
-// ) => {
-//     const query = `SELECT l.id AS lecturer_id, l.name AS lecturer_name, c.id AS course_id, c.name AS course_name, c.description AS course_description, c.phase AS course_phase
-//   FROM lecturer AS l, course AS c, lecturer_course AS lc
-//   WHERE l.id = ?
-//   AND l.id = lc.lecturer_id
-//   AND c.id = lc.course_id`;
-
-//     try {
-//         const [row] = await connectionPool.execute(query, [lecturerId]);
-//         onResult(null, mapToLecturers(<RowDataPacket[]>row)[0]);
-//     } catch (error) {
-//         onResult(error, null);
-//     }
-// };
-
-// const addLecturer = async (
-//     lecturer: Lecturer,
-//     onResult: (error: Error, addedLecturerId: number) => void
-// ) => {
-//     const lecturerInsert = 'INSERT INTO lecturer (name) VALUES (?)';
-//     const lecturerCourseInsert =
-//         'INSERT INTO lecturer_course (lecturer_id, course_id) VALUES (?, ?)';
-
-//     const connection = await connectionPool.getConnection();
-
-//     // Multiple queries are involved, so we execute them in a transaction to assure they will only get commited
-//     // when all queries were succesful. Otherwise, all queries need to be rolled back.
-//     await connection.beginTransaction();
-
-//     try {
-//         const [result] = await connection.execute(lecturerInsert, [lecturer.name]);
-//         const addedLecturerId = (<ResultSetHeader>result).insertId;
-
-//         // we can't use forEach, since it expects a synchronous function and doesn't wait for promises
-//         for (const course of lecturer.courses) {
-//             await connection.execute(lecturerCourseInsert, [addedLecturerId, course.id]);
-//         }
-
-//         await connection.commit();
-//         onResult(null, addedLecturerId);
-//     } catch (error) {
-//         await connection.rollback();
-//         onResult(error, null);
-//     } finally {
-//         await connection.release();
-//     }
-// };
 
 export { getUsers, changeStatus, addFriend, getFriends, findUserById, findUserByEmail, createUserByEmailAndPassword};

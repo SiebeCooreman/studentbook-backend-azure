@@ -2,7 +2,7 @@ import express, { Request, Response, Handler } from 'express';
 import * as messageModel from '../model/message';
 const { isAuthenticated } = require('../middlewares');
 import { Message } from '../types';
-import * as userModel from '../model/user';
+
 
 const messageRouter = express.Router();
 messageRouter.get('/', isAuthenticated, async (req, res, next) =>{
@@ -28,7 +28,6 @@ messageRouter.get('/', isAuthenticated, async (req, res, next) =>{
         });
     }
 });
-
 
 messageRouter.post('/', isAuthenticated, async (req, res, next) => {
     const authorId = req.body.userId

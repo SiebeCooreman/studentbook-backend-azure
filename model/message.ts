@@ -1,9 +1,6 @@
 import { Type } from '@prisma/client';
 import { Message } from '../types';
-import { User } from '../types';
-import * as userModel from '../model/user';
 const { PrismaClient } = require('@prisma/client')
-const { PrismaClientValidationError } = require('@prisma/client/runtime')
 const prisma = new PrismaClient()
 
 const getLatestFiveMessages = async (onResult: (error: Error, messages: Message[]) => void) => {
@@ -69,6 +66,7 @@ const addMessage = async (userId: Number, messageText: String,
         onResult(error, null);
     }
 };
+
 
 
 export {getLatestFiveMessages, getLatestFiveMessagesOfFriend, addMessage};
