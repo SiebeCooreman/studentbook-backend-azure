@@ -41,8 +41,4 @@ userRouter.get('/profile', isAuthenticated, async (req, res, next) => {
     }
 });
 
-function lecturer(lecturer: any, arg1: (error: Error, userId: number) => void) {
-    throw new Error('Function not implemented.');
-}
-
 export { userRouter };

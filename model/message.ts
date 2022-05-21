@@ -1,5 +1,7 @@
 import { Type } from '@prisma/client';
 import { Message } from '../types';
+import { User } from '../types';
+import * as userModel from '../model/user';
 const { PrismaClient } = require('@prisma/client')
 const { PrismaClientValidationError } = require('@prisma/client/runtime')
 const prisma = new PrismaClient()
@@ -26,9 +28,15 @@ const getLatestFiveMessages = async (onResult: (error: Error, messages: Message[
 
 const getLatestFiveMessagesOfFriend = async (userId: Number, onResult: (error: Error, messages: Message[]) => void) => {
     try {
+        const friends = await prisma.user.findMany(
+                        {where: {followedBy: {some: {id: userId}}}})
+
+        const friendIds = friends.map (x => x.id)
+
         const fiveMessages = await prisma.message.findMany({
             where: {
-                type: Type.Public
+                type: Type.Public,
+                    authorId: {in: friendIds}
             },
             orderBy: {
                 DateSent: 'desc'
@@ -43,25 +51,6 @@ const getLatestFiveMessagesOfFriend = async (userId: Number, onResult: (error: E
         onResult(error, null);
     }
 };
-
-// const addMeal = async (title:string, userId: number, duration: string, numberOfPortions: string, price: string, picture:string, vegetarian:boolean=false) => {
-//     const meal = await prisma.meal.create({
-//         data: {
-//           title: title,
-//           duration: parseInt(duration),
-//           price: parseFloat(price),
-//           picture: picture,
-//           user: {
-//             connect: {
-//                 id: userId,
-//             },
-//           },
-//           vegetarian: vegetarian,
-//         },
-//         include: {
-//           user: true,
-//         },
-//       })
 
 const addMessage = async (userId: Number, messageText: String,
     onResult: (error: Error, message: String) => void

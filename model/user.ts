@@ -150,26 +150,4 @@ function findUserById(id) {
 //     }
 // };
 
-// const deleteLecturer = async (lecturerId: number, onResult: (error: Error) => void) => {
-//     const lecturerDelete = 'DELETE FROM lecturer WHERE ID = ?';
-//     const lecturerCourseDelete = 'DELETE FROM lecturer_course WHERE lecturer_id = ?';
-
-//     const connection = await connectionPool.getConnection();
-
-//     await connection.beginTransaction();
-
-//     try {
-//         await connection.execute(lecturerCourseDelete, [lecturerId]);
-//         await connection.execute(lecturerDelete, [lecturerId]);
-
-//         await connection.commit();
-//         onResult(null);
-//     } catch (error) {
-//         await connection.rollback();
-//         onResult(error);
-//     } finally {
-//         await connection.release();
-//     }
-// };
-
 export { getUsers, changeStatus, addFriend, getFriends, findUserById, findUserByEmail, createUserByEmailAndPassword};
