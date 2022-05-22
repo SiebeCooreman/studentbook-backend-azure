@@ -47,7 +47,7 @@ authRouter.post('/register', async (req, res, next) => {
             accessToken,
             refreshToken,
             status : user.status,
-            id: existingUser.id
+            id: user.id
         });
     } catch (err) {
         next(err);
