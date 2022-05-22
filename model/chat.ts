@@ -19,7 +19,7 @@ const getAllChatMessagesFromFriend = async (
                 OR: [{ authorId: userId }, { authorId: friendId }],
             },
             orderBy: {
-                DateSent: 'asc',
+                DateSent: 'desc',
             },
             take: 100,
         });
@@ -29,7 +29,7 @@ const getAllChatMessagesFromFriend = async (
     }
 };
 
-const addChatMessage = async (
+const sendChatMessage = async (
     userId: Number,
     friendId: Number,
     messageText: String,
@@ -62,4 +62,4 @@ const addChatMessage = async (
     }
 };
 
-export {getAllChatMessagesFromFriend, addChatMessage };
+export {getAllChatMessagesFromFriend, sendChatMessage };

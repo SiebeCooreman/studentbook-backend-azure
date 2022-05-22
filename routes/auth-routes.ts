@@ -47,7 +47,8 @@ authRouter.post('/register', async (req, res, next) => {
         res.json({
             accessToken,
             refreshToken,
-            status : user.status
+            status : user.status,
+            id: existingUser.id
         });
     } catch (err) {
         next(err);
@@ -87,7 +88,8 @@ authRouter.post('/login', async (req, res, next) => {
         res.json({
             accessToken,
             refreshToken,
-            status : existingUser.status
+            status : existingUser.status,
+            id: existingUser.id
         });
     } catch (err) {
         next(err);
