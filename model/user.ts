@@ -1,6 +1,5 @@
 import { OkPacket, ResultSetHeader, RowDataPacket } from 'mysql2';
 import { User } from '../types';
-import { connectionPool } from '../database';
 const { PrismaClient } = require('@prisma/client')
 const { PrismaClientValidationError } = require('@prisma/client/runtime')
 const prisma = new PrismaClient()
