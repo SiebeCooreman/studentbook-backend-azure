@@ -26,7 +26,7 @@ const getFriends = async (userId: Number, onResult: (error: Error, users: User[]
 };
 
 
-const changeStatus = async (
+const changeStatus = async (loggedin: boolean,
     newStatus: String, userId: Number,
     onResult: (error: Error, addedUserId: number) => void
 ) => {
@@ -38,7 +38,8 @@ const changeStatus = async (
                 id: userId,
             },
             data: {
-                status: newStatus
+                status: newStatus,
+                loggedin: loggedin
             },
         })
         onResult(null, updateStatusForUser);

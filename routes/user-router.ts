@@ -20,7 +20,7 @@ userRouter.put('/status',  isAuthenticated, async (req, res, next) => {
     const userId = req.body.userId
     const newStatus = req.body.status
 
-    userModel.changeStatus(newStatus, userId, (error: Error, userId: number) => {
+    userModel.changeStatus(true, newStatus, userId, (error: Error, userId: number) => {
         if (error) {
             res.status(404).json({ status: 'error', errorMessage: error });
         } else {
