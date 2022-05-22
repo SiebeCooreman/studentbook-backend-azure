@@ -39,7 +39,6 @@ authRouter.post('/register', async (req, res, next) => {
 
         const user = await createUserByEmailAndPassword({ name, status, email, password});
         const jti = uuidv4();
-        console.log(user)
         const { accessToken, refreshToken } = generateTokens(user, jti);
         await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id});
 
