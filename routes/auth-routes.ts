@@ -95,6 +95,17 @@ authRouter.post('/login', async (req, res, next) => {
     }
 });
 
+
+authRouter.post('/logout', async (req, res, next) => {
+    try {
+        const { userId } = req.body;
+        userModel.changeStatus(false, "offline", userId, (error: Error, userId: number) => {});
+        res.json({ "success" : "logged out"});
+    } catch (err) {
+        next(err);
+    }
+});
+
 authRouter.post('/refreshToken', async (req, res, next) => {
     try {
         const { refreshToken } = req.body;
