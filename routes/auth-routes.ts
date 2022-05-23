@@ -82,7 +82,6 @@ authRouter.post('/login', async (req, res, next) => {
         const jti = uuidv4();
         const { accessToken, refreshToken } = generateTokens(existingUser, jti);
         await addRefreshTokenToWhitelist({ jti, refreshToken, userId: existingUser.id, username : existingUser.email, status : existingUser.status});
-        console.log(accessToken)
         userModel.changeStatus(true, "online", existingUser.id, (error: Error, userId: number) => {});
         res.json({
             accessToken,
