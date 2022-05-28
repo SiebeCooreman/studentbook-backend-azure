@@ -25,6 +25,7 @@ export interface User {
     friends: Array<User> | null;
     messages: Array<Message>  | null;
     refreshTokens: Array<RefreshToken>;
+    accessToken: string;
     createdAt: DateTimeFormat;
     updatedAt: DateTimeFormat;
 
