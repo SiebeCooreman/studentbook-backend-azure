@@ -1,133 +1,68 @@
-# Getting Started with Lecturers example
+# Getting Started with our Prisma Backend
 
 ## **Prerequisites**
 
-`WSL`
+`Prisma`
 
-WSL stands for Windows Subsystem Linux and allows you to install a linux distribution in Windows. It provides performant and seamless integration between windows and linux, without the need for virtualisation. Web development and a lot of its tools work better on a linux based system.
-More info: https://www.digitalocean.com/community/posts/trying-the-new-wsl-2-its-fast-windows-subsystem-for-linux
+Prisma is an ORM for Node, MySQL and Typescript. It converts a schema.prisma model-file to a migration that is plain SQL. Querying the database works a little differently, too.
+We use Prisma queries to query the database. It returns data in a JSON format, so there is no need for a mapper. It also automatically generates the types for every model.
 
-If you're running on Windows, you can choose to install WSL2 (with ubuntu distro).
-More information on how to install WSL: https://docs.microsoft.com/en-us/windows/wsl/install.
+Steps to perform to set the prisma database up:
 
-On mac or native linux, you can skip this step.
+1. The **.env** file is different because we use Prisma. More on that later.
 
-`Mysql`
 
-To install mysql in WSL, you can execute:
+`Prisma and JWT`
 
-```
-> sudo apt install mysql-server
-```
+For authentication we make use of JWT Bearer tokens. Mr. Pieck told us about this in the beginning of the semester and so we decided to learn how to make use of it. This also changes our **.env** file a little bit.
 
-To start mysql:
+`Contents of the dotenv file`
 
-```
-sudo service mysql start
-```
-
-You can execute the DDL in **sql/dd.sql** in your favorite mysql tool (Datagrip, Mysql Workbench, SequelPro,...) to create the schema and insert initial data.
-
-`Dotenv`
-
-Dotenv is a module to externalize configuration, for instance database connection details.
-To get this demo up and running, you'll need to create a **.env** file in you root project directory (on the same level as .gitignore). The contents should look like this:
+To get this repo up and running, you'll need to create a **.env** file in you root project directory (on the same level as .gitignore). The contents should look like this:
 
 ```
 APP_PORT=3000
 DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=root
-DB_SCHEME=lecturers
+JWT_ACCESS_SECRET=SECRET123
+JWT_REFRESH_SECRET=ANOTHER_SECRET123
+DATABASE_URL="mysql://root:t@127.0.0.1:3306/studentbook"
 ```
 
-Replace the connection details with the ones from your server.
-
-`VSCode`
-
-Throughout the lessons we'll use VSCode for the exercises. Make sure you have the following extensions downloaded and enabled:
-
--   Prettier - Code formatter
--   Auto Rename Tag
--   GitLens - Git supercharged
-
-Open the settings of VSCode, search for **Format on save** and make sure it's checked. This assures that every time you save a file, it's being formatted according to the code style rules described in **.prettier.rc**.
-
-Replace the values with your local configuration.
+Replace the connection details with the ones from your server. **root** is the username, **t** is the password that we used.
 
 ## **Starting the demo application**
 
-Run the following commands in a terminal (project root folder) to install all required node packages en get the server up and running:
+Run the following commands in a terminal (project root folder) to install all required node packages en get the server up and running 
+*(make sure the .env file is created with correct credentials!):*
 
 ```
 > npm install
+
+> npx prisma migrate dev --name init
 
 > npm start
 ```
 
 This will start an express server on [http://localhost:3000](http://localhost:3000).
-You can test if everything works by requesting http://localhost:3000/status or http://localhost:3000/lecturers from a browser or a tool like Postman.
 
-You can access the API documentation and test it via Swagger running on http://localhost:3000/api-docs.
 
-## **Troubleshooting**
+## **Swagger**
 
-### **Debugging in VSCode and WSL**
+Last but not least: we handled our swagger a little differently.
+You can access the swagger on the regular link (http://localhost:3000/api-docs). 
+Authentication is done with tokens. Swagger handles this very conveniently.
 
-In VSCode, you can attach a debugger to a Node process and use breakpoints to debug your code. However, since the Node processes are running within WSL and VSCode in Windows (where no node processes are running), you'll need to perform some steps to get this working:
+Steps to perform:
 
--   In VSCode install the extension **Remote WSL**.
--   Open VSCode in WSL by clicking on the yellow "><" icon on the bottom of the screen and selecting "Reopen folder in WSL".
--   VSCode is now able to detect the Node processes. Press **Ctrl-shift-p** and type "Debug: attach to Node process".
--   Select (the first) process in the list.
--   You can now put breakpoints and start debugging
+1. Go to the Swagger link.
+2. Open the register request and create your desired user.
+3. Copy the access-token that was sent back in the response.
+4. On the Swagger page, scroll to the top. Click on the little "authorize" lock and paste the access token in there.
+5. If you ever have a connection timeout, creating a new user is NOT mandatory. Just use the login request to retrieve a new access-token.
+6. Done. You can now use the Swagger to send any request you wish.
 
-### **Network problems in WSL**
 
-If you're having problems in WSL when executing command that require a network connection, like **curl** or **ping**, try the following:
+## **TROUBLESHOOTING**
 
-Edit the file **/etc/wsl.conf** and add the lines:
-
-```
-[network]
-generateResolvConf = false
-```
-
-Remove symlink **/etc/resolv.conf**
-
-```
-> sudo rm -rf /etc/resolv.conf\*\*
-```
-
-Create a new file **/etc/resolv.conf** and add the line:
-
-```
-nameserver 8.8.8.8
-```
-
-Lock the resolv.conf so it doesn't get overwritten by executing:
-
-```
-> sudo chattr +i resolv.conf
-```
-
-Restart WSL.
-
-### **Setting WSL as default integrated terminal in VSCode**
-
-In VSCode press **ctr/cmd-shift-p** and type **"Open Settings (JSON)"**.
-
-In the Object **terminal.integrated.profiles.windows** add this entry:
-
-```
-"Ubuntu (WSL)": {
-"path": "C:\\WINDOWS\\System32\\wsl.exe",
-"args": ["-d", "Ubuntu"]
-}
-```
-
-Find the setting **terminal.integrated.defaultProfile.windows** and change it to:
-
-```
-"terminal.integrated.defaultProfile.windows": "Ubuntu (WSL)"
-```
+Please just hit us up on Teams if anything goes wrong during the evaluation of this repository.
+It is extensive, but we worked very hard on it would be a real bummer to lose a point here and there because the documentation was insufficient. Good luck!
