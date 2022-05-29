@@ -60,8 +60,10 @@ Steps to perform:
 6. If you ever have a connection timeout, creating a new user is NOT mandatory. Just use the login request to retrieve a new access-token.
 7. Done. You can now use the Swagger to send any request you wish.
 
+## **Remarks**
+- As you might have noticed, authentication is done with email, not with (user)name. This was a conscious decision. Keeping in mind the tokens it made more sense to do this with an email.
 
-## **TROUBLESHOOTING**
+## **Troubleshooting**
 
 Please just hit us up on Teams if anything goes wrong during the evaluation of this repository.
 It is extensive, but we worked very hard on it would be a real bummer to lose a point here and there because the documentation was insufficient. Good luck!
