@@ -126,7 +126,7 @@ paths:
                 $ref: '#/components/schemas/Token'
         403:
           description: Invalid Credentials
-  /users/Register:
+  /users/register:
     post:
       requestBody:
         required: true
