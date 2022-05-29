@@ -54,10 +54,11 @@ Steps to perform:
 
 1. Go to the Swagger link.
 2. Open the register request and create your desired user.
-3. Copy the access-token that was sent back in the response.
+3. Copy the **access-token** that was sent back in the response.
 4. On the Swagger page, scroll to the top. Click on the little "authorize" lock and paste the access token in there.
-5. If you ever have a connection timeout, creating a new user is NOT mandatory. Just use the login request to retrieve a new access-token.
-6. Done. You can now use the Swagger to send any request you wish.
+5. Click "authorize"
+6. If you ever have a connection timeout, creating a new user is NOT mandatory. Just use the login request to retrieve a new access-token.
+7. Done. You can now use the Swagger to send any request you wish.
 
 
 ## **TROUBLESHOOTING**
