@@ -7,9 +7,7 @@
 Prisma is an ORM for Node, MySQL and Typescript. It converts a schema.prisma model-file to a migration that is plain SQL. Querying the database works a little differently, too.
 We use Prisma queries to query the database. It returns data in a JSON format, so there is no need for a mapper. It also automatically generates the types for every model.
 
-Steps to perform to set the prisma database up:
-
-1. The **.env** file is different because we use Prisma. More on that later.
+Steps to perform to set the prisma database up will be provided later in this guide.
 
 
 `Prisma and JWT`
